@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "254926640168",
+    "project_id": "esmus-all",
+    "storage_bucket": "esmus-all.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254926640168:android:7fa8be828acb4572d4d11d",
+        "android_client_info": {
+          "package_name": "com.esmus.parent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeqZEMPK84kM6ovDQzonojr-P_oHSgIho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
