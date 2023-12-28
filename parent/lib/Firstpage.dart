@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:testing_app/Webinar/Webinar.dart';
+import '/Webinar/Webinar.dart';
 import '/StudentsList/studentsList.dart';
 import '/Circular_designs/Circular_Indicator.dart';
 import '/Login/Servers.dart';

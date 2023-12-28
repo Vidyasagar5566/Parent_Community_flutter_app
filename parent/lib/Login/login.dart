@@ -19,7 +19,7 @@ class loginpage extends StatefulWidget {
 
 class _loginpageState extends State<loginpage> {
   List imageList = [
-    {"id": 1, "image_path": 'images/threads profile.jpeg'},
+    {"id": 1, "image_path": 'images/colleges/slider.webp'},
     {"id": 2, "image_path": 'images/colleges/webinar.jpeg'},
     {"id": 3, "image_path": 'images/colleges/webinar1.jpg'}
   ];

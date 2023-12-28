@@ -1,4 +1,4 @@
-# testing_app
+# parent
 
 "A new Flutter project."
 

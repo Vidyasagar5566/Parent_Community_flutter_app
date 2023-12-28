@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.esmus.parent" "\0"
-            VALUE "FileDescription", "testing_app" "\0"
+            VALUE "CompanyName", "com.esmus" "\0"
+            VALUE "FileDescription", "parent" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "testing_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.esmus.parent. All rights reserved." "\0"
-            VALUE "OriginalFilename", "testing_app.exe" "\0"
-            VALUE "ProductName", "testing_app" "\0"
+            VALUE "InternalName", "parent" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.esmus. All rights reserved." "\0"
+            VALUE "OriginalFilename", "parent.exe" "\0"
+            VALUE "ProductName", "parent" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
