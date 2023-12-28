@@ -1,9 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import '/User_profile/Models.dart';
 import 'dart:io';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
 
 class login_servers {
@@ -42,7 +43,6 @@ class login_servers {
       var data = jsonDecode(response.body) as Map;
       if (data.containsKey('token')) {
         storage.setItem('token', data['token']);
-        print(storage.getItem('token'));
         return false;
       }
       return true;
@@ -55,9 +55,9 @@ class login_servers {
   Future<Username> get_user(String email) async {
     try {
       // await Firebase.initializeApp();
-      String? FCM_token =
-          "123456787uygrfdsawqe3r4tgtbvc xsq123456u7yhgbfvd"; //await FirebaseMessaging.instance.getToken();
-      // print(FCM_token);
+      String? FCM_token = "123456787uygrfdsawqe3r4tgtbvc xsq123456u7yhgbfvd";
+      // await FirebaseMessaging.instance.getToken();
+      print(FCM_token);
       String platform = "";
       if (Platform.isAndroid) {
         platform = "android";
@@ -66,7 +66,7 @@ class login_servers {
       }
 
       Map<String, String> queryParameters = {
-        'token': FCM_token,
+        'token': FCM_token!,
         'platform': platform,
         'email': email
       };

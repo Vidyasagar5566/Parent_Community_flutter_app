@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
 import '/Firstpage.dart';
-import '../Circular_designs/Cure_clip.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import '../Circular_designs/Circular_Indicator.dart';
-//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io';
 import 'Servers.dart';
 
@@ -18,366 +18,250 @@ class loginpage extends StatefulWidget {
 }
 
 class _loginpageState extends State<loginpage> {
-  var email;
-  var password;
+  List imageList = [
+    {"id": 1, "image_path": 'images/threads profile.jpeg'},
+    {"id": 2, "image_path": 'images/colleges/webinar.jpeg'},
+    {"id": 3, "image_path": 'images/colleges/webinar1.jpg'}
+  ];
+  final CarouselController carouselController = CarouselController();
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        //color: Colors.pink[100],
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("images/background.jpg"), fit: BoxFit.cover),
+        appBar: AppBar(
+          title: const Text("ESMUS",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+          centerTitle: true,
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
-                alignment: Alignment.center,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Stack(
                 children: [
-                  ClipPath(
-                      clipper: profile_Clipper(),
-                      child: Container(
-                        height: 250,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                          colors: [Colors.deepPurple, Colors.purple.shade300],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        )),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 90),
-                            Text(
-                              "ESMUS ALL",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                ],
-              ),
-              const Text(
-                "Welcome Back",
-                style: TextStyle(
-                    color: Colors.indigo,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Form(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 40, right: 40),
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          labelText: 'Admin Email ',
-                          hintText: 'enter email',
-                          prefixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                        onChanged: (String value) {
+                  InkWell(
+                    onTap: () {},
+                    child: CarouselSlider(
+                      items: imageList
+                          .map((item) => Container(
+                                margin: EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 40),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: AssetImage(item['image_path']),
+                                        fit: BoxFit.cover)),
+                              ))
+                          .toList(),
+                      carouselController: carouselController,
+                      options: CarouselOptions(
+                        scrollPhysics: const BouncingScrollPhysics(),
+                        autoPlay: true,
+                        aspectRatio: 1,
+                        viewportFraction: 1,
+                        onPageChanged: (index, reason) {
                           setState(() {
-                            email = value;
-                            if (email == "") {
-                              email = null;
-                            }
+                            currentIndex = index;
                           });
                         },
-                        validator: (value) {
-                          return value!.isEmpty ? 'please enter email' : null;
-                        },
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: EdgeInsets.only(left: 40, right: 40),
-                      child: TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: const InputDecoration(
-                          labelText: 'password',
-                          hintText: 'enter password',
-                          prefixIcon: Icon(Icons.password),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                        onChanged: (String value) {
-                          setState(() {
-                            password = value;
-                            if (password == "") {
-                              password = null;
-                            }
-                          });
-                        },
-                        validator: (value) {
-                          return value!.isEmpty
-                              ? 'please enter password'
-                              : null;
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    (email != null && password != null)
-                        ? Container(
-                            padding: EdgeInsets.only(left: 40, right: 40),
-                            margin: EdgeInsets.only(top: 40),
-                            width: 270,
-                            height: 60,
-                            child: MaterialButton(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15.0))),
-                              minWidth: double.infinity,
-                              onPressed: () {
-                                // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                // builder: (BuildContext context) => logincheck(email, password)));
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            logincheck1(email, password)));
-                              },
-                              color: Colors.indigo[200],
-                              textColor: Colors.black,
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w500),
-                              ),
-                            ))
-                        : Container(
-                            margin: EdgeInsets.only(top: 40),
-                            padding: EdgeInsets.only(left: 40, right: 40),
-                            width: 250,
-                            height: 55,
-                            child: MaterialButton(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15.0))),
-                              minWidth: double.infinity,
-                              onPressed: () {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            loginpage(
-                                                "Fill all the above details",
-                                                widget.domain)));
-                              },
-                              color: Colors.green[200],
-                              textColor: Colors.white,
-                              child: const Text("Login",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500)),
-                            )),
-                    const SizedBox(height: 15),
-                    widget.error != ""
-                        ? Container(
-                            child: Center(
-                              child: Text(
-                                widget.error,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 10),
-                              ),
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: imageList.asMap().entries.map((entry) {
+                        return GestureDetector(
+                          onTap: () =>
+                              carouselController.animateToPage(entry.key),
+                          child: Container(
+                            width: currentIndex == entry.key ? 17 : 7,
+                            height: 7.0,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 3.0,
                             ),
-                          )
-                        : Container()
-                  ],
-                ),
-              ),
-              const SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: currentIndex == entry.key
+                                    ? Colors.red
+                                    : Colors.teal),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: Colors.blue[900],
-                    ),
-                    child: ElevatedButton.icon(
-                        onPressed: () async {},
-                        icon: const FaIcon(
-                          FontAwesomeIcons.google,
-                          color: Colors.red,
-                        ),
-                        label: Text("Sign In With Student Email")),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              Center(
-                child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return StatefulBuilder(builder:
-                                (BuildContext context, StateSetter setState) {
-                              return AlertDialog(
-                                contentPadding: EdgeInsets.all(25),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text("close"))
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400))),
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "2. Also You are not allowed to share any type of posts, and liking any contents",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400))),
-                                    const SizedBox(height: 20),
-                                    const Center(
-                                        child: Text(
-                                            "3. Guests are only allowed to read the data inside the app shared by students",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400))),
-                                    const SizedBox(height: 30),
-                                    Row(
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 80, bottom: 100),
+              decoration: const BoxDecoration(
+                  color: Colors.indigoAccent,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: ElevatedButton.icon(
+                          onPressed: () async {},
+                          icon: const FaIcon(
+                            FontAwesomeIcons.google,
+                            color: Colors.red,
+                          ),
+                          label: Text("Sign In With Email")),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return StatefulBuilder(builder:
+                                  (BuildContext context, StateSetter setState) {
+                                return AlertDialog(
+                                  contentPadding: EdgeInsets.all(25),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text("Institute : ",
+                                          Container(),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("close"))
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20),
+                                      const Center(
+                                          child: Text(
+                                              "1. If you continue as guest, you are not allowed to receive any notifications and updates from this app",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w400)),
-                                          DropdownButton<String>(
-                                              value: widget.domain,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                              underline: Container(),
-                                              elevation: 0,
-                                              items: domains_list_ex_all.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style:
-                                                        TextStyle(fontSize: 10),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  widget.domain = value!;
-                                                });
-                                              })
-                                        ]),
-                                    const SizedBox(height: 1),
-                                    Container(
-                                      margin: const EdgeInsets.all(30),
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10))),
-                                      child: OutlinedButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(builder:
-                                                        (BuildContext context) {
-                                              if (widget.domain != "All") {
-                                                return logincheck1(
-                                                    "guest" +
-                                                        domains1[
-                                                            widget.domain]!,
-                                                    "@Vidyasag5566");
-                                              } else {
-                                                return logincheck1(
-                                                    "guest@nitc.ac.in",
-                                                    "@Vidyasag5566");
-                                              }
-                                            }),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                          },
-                                          child: const Center(
-                                              child: Text(
-                                            "Continue as guest?",
-                                            style:
-                                                TextStyle(color: Colors.blue),
-                                          ))),
-                                    ),
-                                    const SizedBox(height: 10),
-                                  ],
-                                ),
-                              );
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                      FontWeight.w400))),
+                                      const SizedBox(height: 20),
+                                      const Center(
+                                          child: Text(
+                                              "2. Also You are not allowed to share any type of posts, and liking any contents",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                      FontWeight.w400))),
+                                      const SizedBox(height: 20),
+                                      const Center(
+                                          child: Text(
+                                              "3. Guests are only allowed to read the data inside the app shared by students",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                      FontWeight.w400))),
+                                      const SizedBox(height: 30),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text("Institute : ",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            DropdownButton<String>(
+                                                value: widget.domain,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black),
+                                                underline: Container(),
+                                                elevation: 0,
+                                                items: domains_list_ex_all.map<
+                                                        DropdownMenuItem<
+                                                            String>>(
+                                                    (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(
+                                                      value,
+                                                      style: TextStyle(
+                                                          fontSize: 10),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    widget.domain = value!;
+                                                  });
+                                                })
+                                          ]),
+                                      const SizedBox(height: 1),
+                                      Container(
+                                        margin: const EdgeInsets.all(30),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10))),
+                                        child: OutlinedButton(
+                                            onPressed: () async {
+                                              Navigator.pop(context);
+                                              Navigator.of(context)
+                                                  .pushAndRemoveUntil(
+                                                      MaterialPageRoute(builder:
+                                                          (BuildContext
+                                                              context) {
+                                                if (widget.domain != "All") {
+                                                  return logincheck1(
+                                                      "guest" +
+                                                          domains1[
+                                                              widget.domain]!,
+                                                      "@Vidyasag5566");
+                                                } else {
+                                                  return logincheck1(
+                                                      "guest@nitc.ac.in",
+                                                      "@Vidyasag5566");
+                                                }
+                                              }),
+                                                      (Route<dynamic> route) =>
+                                                          false);
+                                            },
+                                            child: const Center(
+                                                child: Text(
+                                              "Continue as guest?",
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ))),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
+                                );
+                              });
                             });
-                          });
-                    },
-                    child: Text("Continue As Guest")),
-              )
-            ],
-          ),
-        ),
-      ),
-    ));
+                      },
+                      child: const Text("Continue As Guest",
+                          style: TextStyle(color: Colors.white))),
+                )
+              ]),
+            )
+          ],
+        ));
   }
 }
 

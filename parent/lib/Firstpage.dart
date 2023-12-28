@@ -1,13 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:testing_app/Circular_designs/Circular_Indicator.dart';
-import 'package:testing_app/Login/Servers.dart';
-import 'package:testing_app/Login/login.dart';
-import 'package:testing_app/Posts/post.dart';
-import 'package:testing_app/Register_Update/Register.dart';
-import 'package:testing_app/User_Star_Mark/User_Profile_Star_Mark.dart';
+import 'package:testing_app/Webinar/Webinar.dart';
+import '/StudentsList/studentsList.dart';
+import '/Circular_designs/Circular_Indicator.dart';
+import '/Login/Servers.dart';
+import '/Login/login.dart';
+import '/Posts/post.dart';
+import '/Register_Update/Register.dart';
+import '/UniversitiesList/Universities.dart';
+import '/User_Star_Mark/User_Profile_Star_Mark.dart';
 import '/Activities/Models.dart';
 import '/Threads/Models.dart';
 import '/User_profile/Models.dart';
@@ -134,60 +136,75 @@ class _firstPageState extends State<firstPage> {
                 (Route<dynamic> route) => false);
           },
           child: Scaffold(
-            appBar: AppBar(
-                title: widget.curr_index == 0
-                    ? Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.white,
-                            backgroundImage: AssetImage("images/sagar.jpeg"),
-                          ),
-                          const SizedBox(width: 40),
-                          Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[400],
-                                  borderRadius: BorderRadius.circular(50)),
-                              padding: const EdgeInsets.only(right: 7),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    height: 32,
-                                    width: width * 0.60,
-                                    child: TextField(
-                                      controller: _controller1,
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                      keyboardType: TextInputType.multiline,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      onChanged: (String value) {
-                                        setState(() {
-                                          comment = value;
-                                          if (comment == "") {
-                                            comment = null;
-                                          }
-                                        });
-                                      },
-                                    ),
+            appBar: widget.curr_index == 0 //|| widget.curr_index == 3
+                ? AppBar(
+                    title: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage("images/sagar.jpeg"),
+                      ),
+                      const SizedBox(width: 40),
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(50)),
+                          padding: const EdgeInsets.only(right: 7),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                height: 32,
+                                width: width * 0.60,
+                                child: TextField(
+                                  controller: _controller1,
+                                  style: const TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
                                   ),
-                                  const Icon(Icons.search, size: 20)
-                                ],
-                              )),
-                        ],
-                      )
-                    : Container()),
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      comment = value;
+                                      if (comment == "") {
+                                        comment = null;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                              const Icon(Icons.search, size: 20)
+                            ],
+                          )),
+                    ],
+                  ))
+                : widget.curr_index == 1
+                    ? AppBar(title: Text("Institutions"), centerTitle: false)
+                    : widget.curr_index == 2
+                        ? AppBar(
+                            title: Text("Freelancing"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {}, child: Text("Filters"))
+                            ],
+                            centerTitle: false)
+                        : AppBar(
+                            title: Text("Webinars"),
+                            centerTitle: false,
+                          ),
             body: widget.curr_index == 0
                 ? all_posts.isEmpty
                     ? postwidget(widget.app_user, "All")
                     : postwidget1(all_posts, widget.app_user, 'All', false)
                 : widget.curr_index == 1
-                    ? Container()
+                    ? universitiesList()
                     : widget.curr_index == 2
-                        ? Container()
-                        : Container(),
+                        ? all_search_users.isEmpty
+                            ? studentsList(widget.app_user, 'All')
+                            : user_list_display(
+                                all_search_users, widget.app_user, '', 'All')
+                        : webinarSection1([], app_user, 'All', false),
             bottomNavigationBar: BottomNavigationBar(
               fixedColor: Colors.blue,
               backgroundColor: Colors.white70,
