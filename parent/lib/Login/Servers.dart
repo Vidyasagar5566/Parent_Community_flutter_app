@@ -54,9 +54,8 @@ class login_servers {
 // GETTING USER CREDIDENTIALS // DELETE USER
   Future<Username> get_user(String email) async {
     try {
-      // await Firebase.initializeApp();
-      String? FCM_token = "123456787uygrfdsawqe3r4tgtbvc xsq123456u7yhgbfvd";
-      // await FirebaseMessaging.instance.getToken();
+      await Firebase.initializeApp();
+      String? FCM_token = await FirebaseMessaging.instance.getToken();
       print(FCM_token);
       String platform = "";
       if (Platform.isAndroid) {

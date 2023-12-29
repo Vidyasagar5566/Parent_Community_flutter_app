@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:localstorage/localstorage.dart';
 import '/Webinar/Webinar.dart';
 import '/StudentsList/studentsList.dart';
 import '/Circular_designs/Circular_Indicator.dart';
@@ -48,7 +50,6 @@ class _get_ueser_widgetState extends State<get_ueser_widget> {
             app_user = app_user;
 
             star_user_mark(app_user);
-
             if (!app_user.isDetails!) {
               return LoginRegister(app_user);
             }
@@ -140,10 +141,22 @@ class _firstPageState extends State<firstPage> {
                 ? AppBar(
                     title: Row(
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.white,
-                        backgroundImage: AssetImage("images/sagar.jpeg"),
+                      GestureDetector(
+                        onTap: () async {
+                          await GoogleSignIn().signOut();
+                          LocalStorage storage = LocalStorage("usertoken");
+                          storage.clear();
+
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      loginpage("", 'Nit Calicut')));
+                        },
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.white,
+                          backgroundImage: AssetImage("images/sagar.jpeg"),
+                        ),
                       ),
                       const SizedBox(width: 40),
                       Container(

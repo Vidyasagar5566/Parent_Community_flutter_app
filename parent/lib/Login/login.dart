@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../Servers_Fcm_Notif_Domains/servers.dart';
 import '/Firstpage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,6 +10,66 @@ import '../Circular_designs/Circular_Indicator.dart';
 // import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io';
 import 'Servers.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+
+String name = "";
+String google_email = "";
+String imageUrl = "";
+
+Future<String> signInWithGoogle() async {
+  await Firebase.initializeApp();
+  final GoogleSignIn googleuser = GoogleSignIn();
+
+  final GoogleSignInAccount? googleSignInAccount = await googleuser.signIn();
+
+  final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount!.authentication;
+
+  final AuthCredential credential = GoogleAuthProvider.credential(
+    accessToken: googleSignInAuthentication.accessToken,
+    idToken: googleSignInAuthentication.idToken,
+  );
+
+  final UserCredential authResult =
+      await _auth.signInWithCredential(credential);
+  final User user = authResult.user!;
+
+  if (user != null) {
+    // Checking if email and name is null
+    assert(user.email != null);
+    assert(user.displayName != null);
+    assert(user.photoURL != null);
+
+    name = user.displayName!;
+    google_email = user.email!;
+    imageUrl = user.photoURL!;
+
+    // Only taking the first part of the name, i.e., First Name
+    if (name.contains(" ")) {
+      name = name.substring(0, name.indexOf(" "));
+    }
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final User currentUser = _auth.currentUser!;
+    assert(user.uid == currentUser.uid);
+
+    print('signInWithGoogle succeeded: $user');
+
+    return google_email;
+  }
+
+  return googleSignInAccount.email; // "buddala_b190838ec@nitc.ac.in";
+}
+
+Future<void> signOutGoogle() async {
+  await GoogleSignIn().signOut();
+
+  print("User Signed Out");
+}
 
 class loginpage extends StatefulWidget {
   String error;
@@ -19,9 +82,9 @@ class loginpage extends StatefulWidget {
 
 class _loginpageState extends State<loginpage> {
   List imageList = [
-    {"id": 1, "image_path": 'images/colleges/slider.webp'},
-    {"id": 2, "image_path": 'images/colleges/webinar.jpeg'},
-    {"id": 3, "image_path": 'images/colleges/webinar1.jpg'}
+    {"id": 1, "image_path": 'images/sliders/events.png'},
+    {"id": 2, "image_path": 'images/sliders/academic.png'},
+    {"id": 3, "image_path": 'images/sliders/parents.png'}
   ];
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
@@ -38,6 +101,7 @@ class _loginpageState extends State<loginpage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
+              margin: EdgeInsets.only(top: 100),
               child: Stack(
                 children: [
                   InkWell(
@@ -58,8 +122,8 @@ class _loginpageState extends State<loginpage> {
                       options: CarouselOptions(
                         scrollPhysics: const BouncingScrollPhysics(),
                         autoPlay: true,
-                        aspectRatio: 1,
-                        viewportFraction: 1,
+                        // aspectRatio: 1,
+                        // viewportFraction: 1,
                         onPageChanged: (index, reason) {
                           setState(() {
                             currentIndex = index;
@@ -113,7 +177,18 @@ class _loginpageState extends State<loginpage> {
                         borderRadius: BorderRadius.circular(7),
                       ),
                       child: ElevatedButton.icon(
-                          onPressed: () async {},
+                          onPressed: () async {
+                            await signOutGoogle();
+                            String google_email = "";
+
+                            google_email = await signInWithGoogle();
+
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        email_check(google_email)),
+                                (Route<dynamic> route) => false);
+                          },
                           icon: const FaIcon(
                             FontAwesomeIcons.google,
                             color: Colors.red,
